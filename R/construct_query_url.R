@@ -40,15 +40,18 @@ construct_query_url <- function(wh_dataset,
     location_clean <- stringr::str_replace_all(location, ' ', '%20')
 
     req_url <- paste0(req_url,
-                      '&location=', location_clean)
+                      '&filter_column=location',
+                      '&filter_value=', location_clean)
   }
 
   if(!location_type == '') {
     location_type_clean <- stringr::str_replace_all(location_type, ' ', '%20')
 
     req_url <- paste0(req_url,
-                      '&location_type=', location_type_clean)
+                      '&filter_column=location_type',
+                      '&filter_value=', location_type_clean)
   }
 
   return(req_url)
 }
+

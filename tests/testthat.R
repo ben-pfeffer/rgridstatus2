@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(rgridstatus)
+library(rgridstatus2)
 
-test_check("rgridstatus")
+test_check("rgridstatus2")
