@@ -13,25 +13,25 @@ knitr::opts_chunk$set(
 )
 ```
 
-# rgridstatus
+# rgridstatus2
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/andypicke/rgridstatus/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/andypicke/rgridstatus/actions/workflows/R-CMD-check.yaml) [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental) [![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![R-CMD-check](https://github.com/ben-pfeffer/rgridstatus2/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ben-pfeffer/rgridstatus2/actions/workflows/R-CMD-check.yaml) [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental) [![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 
 <!-- badges: end -->
 
-The goal of rgridstatus is to provide a R API wrapper for the [GridStatusIO](https://www.gridstatus.io/home) [API](https://www.gridstatus.io/api).
+The goal of rgridstatus2 is to provide a R API wrapper for the [GridStatusIO](https://www.gridstatus.io/home) [API](https://www.gridstatus.io/api).
 
-See also my [blog post](https://andypicke.quarto.pub/portfolio/posts/rGridStatus/rGridStatus.html) describing some features of the package.
+This package is based on Andy Picke's rgridstatus package. See more at his [blog post](https://andypicke.quarto.pub/portfolio/posts/rGridStatus/rGridStatus.html) and [github page](https://github.com/andypicke/rgridstatus).
 
 ## Installation
 
-You can install the development version of [rgridstatus](https://github.com/andypicke/rgridstatus) from [GitHub](https://github.com/) with:
+You can install the development version of [rgridstatus](https://github.com/ben-pfeffer/rgridstatus2) from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("andypicke/rgridstatus")
+devtools::install_github("ben-pfeffer/rgridstatus2")
 ```
 
 You will need to register for an API key. By default, all functions assume you have stored your API key in your *.Renviron* file with the name *GRIDSTATUS_API_KEY*.
@@ -101,28 +101,4 @@ str(df)
 
 ```
 
-
-### Pivot fuel mix dataframe to long format for easier plotting
-
-{rgridstatus} contains a convenience function *pivot_gen_long()* to pivot the fuel mix dataframe to a long format. This can make it easier to plot multiple timeseries.
-
-```{r}
-
-df_long <- pivot_gen_long(df)
-
-head(df_long)
-
-```
-
-With the data in a long format, we can just specify that the color or linetype should correspond to the *fuel_type*.
-
-```{r}
-
-
-df_long |>
-  ggplot(aes(datetime_local, generation)) +
-  geom_line(aes(color = fuel_type)) 
-
-
-```
 

@@ -1,8 +1,8 @@
-Package: rgridstatus
+Package: rgridstatus2
 Title: API Wrapper For GridStatus 
 Version: 0.0.0.9000
 Authors@R: 
-    person("Andy", "Pickering", , "andypicke@gmail.com", role = c("aut", "cre"),
+    person("Ben", "Pfeffer", , "bpfffr@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
@@ -17,8 +17,8 @@ Imports:
     purrr,
     stringr,
     tidyr
-URL: https://github.com/andypicke/rgridstatus
-BugReports: https://github.com/andypicke/rgridstatus/issues
+URL: https://github.com/bpfeffer/rgridstatus2
+BugReports: https://github.com/bpfeffer/rgridstatus2/issues
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
