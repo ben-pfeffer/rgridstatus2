@@ -11,6 +11,8 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+
+library(tidyverse)
 ```
 
 # rgridstatus2
@@ -21,7 +23,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-The goal of rgridstatus2 is to provide a R API wrapper for the [GridStatusIO](https://www.gridstatus.io/home) [API](https://www.gridstatus.io/api).
+The goal of rgridstatus2 is to provide an R API wrapper for the [GridStatusIO](https://www.gridstatus.io/home) [API](https://www.gridstatus.io/api).
 
 This package is based on Andy Picke's rgridstatus package. See more at his [blog post](https://andypicke.quarto.pub/portfolio/posts/rGridStatus/rGridStatus.html) and [github page](https://github.com/andypicke/rgridstatus).
 
@@ -34,19 +36,23 @@ You can install the development version of [rgridstatus](https://github.com/ben-
 devtools::install_github("ben-pfeffer/rgridstatus2")
 ```
 
-You will need to register for an API key. By default, all functions assume you have stored your API key in your *.Renviron* file with the name *GRIDSTATUS_API_KEY*.
+You will need to register for an API key. By default, all functions assume you have stored your API key in your *.Renviron* file with the name *GRIDSTATUS_API_KEY*. I used the usethis package to add my key to my environment. 
+
+```{r}
+# usethis::edit_r_environ() # set API key as GRIDSTATUS_API_KEY = 'XXXXXXXXXXX'
+# Sys.getenv('GRIDSTATUS_API_KEY') # test that your key is in your environment
+
+```
+
 
 ## Examples
 
 ### Get info on datasets available from GridStatus API:
 
 ```{r example}
-
 library(rgridstatus2)
-library(tidyverse)
 
 info <- get_available_datasets()
-head(info)
 ```
 
 ### Get unique data source names
@@ -54,41 +60,26 @@ head(info)
 Most of the "sources" are [ISOs](https://en.wikipedia.org/wiki/Regional_transmission_organization_(North_America)).
 
 ```{r}
-
 # input is info from get_available_datasets()
 sources <- get_source_names(info)
 sources
 
 ```
 
-### Get dataset names for one operator/source
-
-The dataset names all start with the ISO/source, so it is easy to filter by those:
-
-```{r}
-
-info_caiso <- get_available_datasets() |> 
-  dplyr::filter(stringr::str_detect(name,"^CAISO_")) # name starts with "CAISO_"
-
-```
-
-
 ### Download a dataset
 
 ```{r}
-
 df <- get_gridstatus_dataset(wh_dataset = "caiso_fuel_mix", 
                              start_time = "2024-09-03", 
                              end_time = "2024-09-05")
 
-str(df)
+head(df, 5)
 
 ```
 
-### Get Day Ahead Pricing
+### Convenience Function - Get Day Ahead Pricing
 
 ```{r}
-
 # different ISOs have different location_type filter terms
 e <- get_da_hourly_prices(iso = 'ercot', location_type = 'Trading Hub', limit = 5)
 # c <- get_da_hourly_prices(iso = 'caiso', location_type = 'Trading Hub', limit = 5)
@@ -98,11 +89,19 @@ e <- get_da_hourly_prices(iso = 'ercot', location_type = 'Trading Hub', limit = 
 # i <- get_da_hourly_prices(iso = 'isone', location_type = 'LOAD ZONE',   limit = 5)
 # p <- get_da_hourly_prices(iso = 'pjm',   location_type = 'ZONE',        limit = 5) # case sensitive!
 
-b <- get_da_hourly_prices(iso = 'isone', location = 'DR.MA_Boston', 
-                          start_time = '2024-08-08', end_time = '2024-08-09',
-                          limit = 5)
+# b <- get_da_hourly_prices(iso = 'isone', location = 'DR.MA_Boston', 
+#                           start_time = '2024-08-08', end_time = '2024-08-09',
+#                           limit = 5)
 
 head(e, 5)
 
 ```
 
+### Convenience Function - Get Load Data
+Coming soon...
+
+### Convenience Function - Get Fuel Mix
+Coming soon...
+
+### Convenience Function - Get Capacity Data
+Coming soon...

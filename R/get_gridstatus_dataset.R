@@ -2,28 +2,26 @@
 #' @param wh_dataset Name of dataset to download. Default is "caiso_fuel_mix"
 #' @param start_time Start time. Default is 5 days ago.
 #' @param end_time End time. Default is today's date.
-#' @param api_key API key. Default is "GRIDSTATUS_API_KEY" stored in .Renviron file
-#' @param tz_local Local timezone to display times in column "datetime_local" (default "US/Pacific"). See available timezones with OlsonNames()
+#' @param limit Number of requests to return. Default is 100.
+#' @param timezone Default is market, which returns times in the market's local time
+#' @param location filter term for the data's location column
+#' @param location_type filter term for the data's location_type column
 #' @returns df: Dataframe of requested dataset
 #' @export
 
-get_gridstatus_dataset <- function(wh_dataset = "caiso_fuel_mix",
-                          start_time = Sys.Date() - 5,
-                          end_time = Sys.Date(),
-                          api_key = Sys.getenv("GRIDSTATUS_API_KEY"),
-                          tz_local = "US/Pacific") {
+get_gridstatus_dataset <- function(wh_dataset,
+                                   start_time = Sys.Date() - 5,
+                                   end_time = Sys.Date(),
+                                   limit = 100,
+                                   timezone = 'market',
+                                   location = '',
+                                   location_type = '') {
 
   # construct full request url
-  req_url <- construct_query_url(wh_dataset, start_time, end_time)
+  req_url <- construct_query_url(wh_dataset, start_time, end_time,
+                                 limit, timezone, location, location_type)
 
-  df <- get_api_request(req_url, api_key)
-
-  # convert datetime column format
-  df$interval_start_utc <- lubridate::as_datetime(df$interval_start_utc)
-  # display in local timezone
-  df$datetime_local <- lubridate::with_tz(df$interval_start_utc, tzone = tz_local)
-
-  df <- df |> dplyr::select(-c("interval_end_utc"))
+  df <- get_api_request(req_url)
 
   return(df)
 }

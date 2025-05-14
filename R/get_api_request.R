@@ -9,7 +9,8 @@ get_api_request <- function(query_url, api_key = Sys.getenv("GRIDSTATUS_API_KEY"
                             parse_request = TRUE){
 
   # send GET request
-  resp <- httr::GET(query_url, httr::add_headers('x-api-key' = api_key), httr::user_agent("rgridstatus (https://github.com/andypicke/rgridstatus)"))
+  resp <- httr::GET(query_url, httr::add_headers('x-api-key' = api_key),
+                    httr::user_agent("rgridstatus2 (https://github.com/ben-pfeffer/gridstatus2)"))
 
   # check if successful response code returned
   if (resp$status_code != 200) {
