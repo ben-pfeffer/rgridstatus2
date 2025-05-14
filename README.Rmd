@@ -42,7 +42,7 @@ You will need to register for an API key. By default, all functions assume you h
 
 ```{r example}
 
-library(rgridstatus)
+library(rgridstatus2)
 library(tidyverse)
 
 info <- get_available_datasets()
@@ -70,22 +70,6 @@ The dataset names all start with the ISO/source, so it is easy to filter by thos
 info_caiso <- get_available_datasets() |> 
   dplyr::filter(stringr::str_detect(name,"^CAISO_")) # name starts with "CAISO_"
 
-```
-
-### Get a list of dataset updates
-
-```{r}
-
-updates <- get_dataset_updates()
-head(updates)
-
-```
-
-Again, you can filter the results to get updates for a specific ISO/source:
-```{r}
-
-updates_caiso <- updates |> dplyr::filter(stringr::str_detect(dataset, "^caiso_"))
-updates_caiso
 ```
 
 
