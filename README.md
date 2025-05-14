@@ -82,17 +82,17 @@ head(info)
 #>   earliest_available_time_utc latest_available_time_utc     source
 #> 1   2017-12-13T22:05:00+00:00 2025-05-07T19:20:00+00:00 gridstatus
 #> 2   2011-01-01T06:30:00+00:00 2025-05-07T14:00:00+00:00 gridstatus
-#> 3   2010-01-01T08:00:00+00:00 2025-05-15T06:00:00+00:00      caiso
-#> 4   2010-01-01T08:00:00+00:00 2025-05-15T06:00:00+00:00      caiso
+#> 3   2010-01-01T08:00:00+00:00 2025-05-16T06:00:00+00:00      caiso
+#> 4   2010-01-01T08:00:00+00:00 2025-05-15T20:00:00+00:00      caiso
 #> 5   2021-06-18T07:00:00+00:00 2025-05-14T07:00:00+00:00      caiso
-#> 6   2017-01-01T12:00:00+00:00 2025-05-13T03:00:00+00:00      caiso
+#> 6   2017-01-01T12:00:00+00:00 2025-05-14T06:00:00+00:00      caiso
 #>       last_checked_time_utc
-#> 1 2025-05-14T16:16:50+00:00
-#> 2 2025-05-14T16:16:50+00:00
-#> 3 2025-05-14T16:18:16+00:00
-#> 4 2025-05-14T16:18:21+00:00
-#> 5 2025-05-14T15:37:13+00:00
-#> 6 2025-05-14T16:18:21+00:00
+#> 1 2025-05-14T20:06:44+00:00
+#> 2 2025-05-14T20:06:44+00:00
+#> 3 2025-05-14T19:56:57+00:00
+#> 4 2025-05-14T20:06:41+00:00
+#> 5 2025-05-14T19:39:47+00:00
+#> 6 2025-05-14T19:39:55+00:00
 #>                                                   primary_key_columns
 #> 1                                 iso, rank, record_type, metric_name
 #> 2                   iso, interval_start_utc, record_type, metric_name
@@ -189,4 +189,36 @@ str(df)
 #>  $ imports             : int  5764 5267 5020 4994 4969 5134 5241 5266 5337 5377 ...
 #>  $ other               : int  0 0 0 0 0 0 0 0 0 0 ...
 #>  $ datetime_local      : POSIXct, format: "2024-09-03 00:00:00" "2024-09-03 00:05:00" ...
+```
+
+### Get Day Ahead Pricing
+
+``` r
+
+# different ISOs have different location_type filter terms
+e <- get_da_hourly_prices(iso = 'ercot', location_type = 'Trading Hub', limit = 5)
+# c <- get_da_hourly_prices(iso = 'caiso', location_type = 'Trading Hub', limit = 5)
+# n <- get_da_hourly_prices(iso = 'nyiso', location_type = 'Zone',        limit = 5)
+# m <- get_da_hourly_prices(iso = 'miso',  location_type = 'Interface',   limit = 5)
+# s <- get_da_hourly_prices(iso = 'spp',   location_type = 'Interface',   limit = 5)
+# i <- get_da_hourly_prices(iso = 'isone', location_type = 'LOAD ZONE',   limit = 5)
+# p <- get_da_hourly_prices(iso = 'pjm',   location_type = 'ZONE',        limit = 5) # case sensitive!
+
+b <- get_da_hourly_prices(iso = 'isone', location = 'DR.MA_Boston', 
+                          start_time = '2024-08-08', end_time = '2024-08-09',
+                          limit = 5)
+
+head(e, 5)
+#>        interval_start_local        interval_start_utc        interval_end_local
+#> 1 2025-05-09T00:00:00-05:00 2025-05-09T05:00:00+00:00 2025-05-09T01:00:00-05:00
+#> 2 2025-05-09T00:00:00-05:00 2025-05-09T05:00:00+00:00 2025-05-09T01:00:00-05:00
+#> 3 2025-05-09T00:00:00-05:00 2025-05-09T05:00:00+00:00 2025-05-09T01:00:00-05:00
+#> 4 2025-05-09T00:00:00-05:00 2025-05-09T05:00:00+00:00 2025-05-09T01:00:00-05:00
+#> 5 2025-05-09T00:00:00-05:00 2025-05-09T05:00:00+00:00 2025-05-09T01:00:00-05:00
+#>            interval_end_utc   location location_type           market   spp
+#> 1 2025-05-09T06:00:00+00:00  HB_BUSAVG   Trading Hub DAY_AHEAD_HOURLY 42.07
+#> 2 2025-05-09T06:00:00+00:00 HB_HOUSTON   Trading Hub DAY_AHEAD_HOURLY 40.11
+#> 3 2025-05-09T06:00:00+00:00  HB_HUBAVG   Trading Hub DAY_AHEAD_HOURLY 42.50
+#> 4 2025-05-09T06:00:00+00:00   HB_NORTH   Trading Hub DAY_AHEAD_HOURLY 42.75
+#> 5 2025-05-09T06:00:00+00:00     HB_PAN   Trading Hub DAY_AHEAD_HOURLY 46.14
 ```

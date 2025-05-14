@@ -91,12 +91,12 @@ str(df)
 
 # different ISOs have different location_type filter terms
 e <- get_da_hourly_prices(iso = 'ercot', location_type = 'Trading Hub', limit = 5)
-c <- get_da_hourly_prices(iso = 'caiso', location_type = 'Trading Hub', limit = 5)
-n <- get_da_hourly_prices(iso = 'nyiso', location_type = 'Zone',        limit = 5)
-m <- get_da_hourly_prices(iso = 'miso',  location_type = 'Interface',   limit = 5)
-s <- get_da_hourly_prices(iso = 'spp',   location_type = 'Interface',   limit = 5)
-i <- get_da_hourly_prices(iso = 'isone', location_type = 'LOAD ZONE',   limit = 5)
-p <- get_da_hourly_prices(iso = 'pjm',   location_type = 'ZONE',        limit = 5) # case sensitive!
+# c <- get_da_hourly_prices(iso = 'caiso', location_type = 'Trading Hub', limit = 5)
+# n <- get_da_hourly_prices(iso = 'nyiso', location_type = 'Zone',        limit = 5)
+# m <- get_da_hourly_prices(iso = 'miso',  location_type = 'Interface',   limit = 5)
+# s <- get_da_hourly_prices(iso = 'spp',   location_type = 'Interface',   limit = 5)
+# i <- get_da_hourly_prices(iso = 'isone', location_type = 'LOAD ZONE',   limit = 5)
+# p <- get_da_hourly_prices(iso = 'pjm',   location_type = 'ZONE',        limit = 5) # case sensitive!
 
 b <- get_da_hourly_prices(iso = 'isone', location = 'DR.MA_Boston', 
                           start_time = '2024-08-08', end_time = '2024-08-09',
