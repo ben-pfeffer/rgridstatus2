@@ -3,6 +3,7 @@
 export(construct_query_url)
 export(get_api_request)
 export(get_available_datasets)
+export(get_da_hourly_prices)
 export(get_dataset_updates)
 export(get_gridstatus_dataset)
 export(get_source_names)
