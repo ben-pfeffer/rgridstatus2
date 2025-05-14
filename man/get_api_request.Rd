@@ -4,12 +4,18 @@
 \alias{get_api_request}
 \title{Make API GET request and return data}
 \usage{
-get_api_request(query_url, api_key = Sys.getenv("GRIDSTATUS_API_KEY"))
+get_api_request(
+  query_url,
+  api_key = Sys.getenv("GRIDSTATUS_API_KEY"),
+  parse_request = TRUE
+)
 }
 \arguments{
 \item{query_url}{URL for the API query}
 
 \item{api_key}{API key; Defaults is key saved in .renviron file as "GRIDSTATUS_API_KEY"}
+
+\item{parse_request}{boolean - TRUE returns data; false returns raw JSON. Default is TRUE}
 }
 \value{
 data from the API response

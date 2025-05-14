@@ -5,9 +5,13 @@
 \title{Build URL for API data request}
 \usage{
 construct_query_url(
-  wh_dataset = "caiso_fuel_mix",
+  wh_dataset,
   start_time = Sys.Date() - 5,
-  end_time = Sys.Date()
+  end_time = Sys.Date(),
+  limit = 100,
+  timezone = "market",
+  location = "",
+  location_type = ""
 )
 }
 \arguments{
@@ -16,6 +20,14 @@ construct_query_url(
 \item{start_time}{Start time. Default is 5 days ago.}
 
 \item{end_time}{End time. Default is today's date.}
+
+\item{limit}{Number of requests to return. Default is 100.}
+
+\item{timezone}{Default is market, which returns times in the market's local time}
+
+\item{location}{filter term for the data's location column}
+
+\item{location_type}{filter term for the data's location_type column}
 }
 \value{
 req_url URL for API request with specified parameters
