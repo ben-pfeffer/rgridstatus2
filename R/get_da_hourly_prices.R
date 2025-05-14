@@ -8,7 +8,6 @@
 #' @param location_type filter term for the data's location_type column
 #' @returns dataset of hourly DA Prices for the specified ISO and date range
 #' @export
-#' @seealso [construct_query_url(), get_api_request()]
 #'
 
 get_da_hourly_prices <- function(iso,
