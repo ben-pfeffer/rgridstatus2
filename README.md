@@ -7,9 +7,9 @@
 
 [![R-CMD-check](https://github.com/ben-pfeffer/rgridstatus2/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ben-pfeffer/rgridstatus2/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![Project Status:
-WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
 <!-- badges: end -->
 
@@ -17,7 +17,7 @@ The goal of rgridstatus2 is to provide an R API wrapper for the
 [GridStatusIO](https://www.gridstatus.io/home)
 [API](https://www.gridstatus.io/api).
 
-This package is based on Andy Picke’s rgridstatus package. See more at
+This package is built from Andy Picke’s rgridstatus package. See more at
 his [blog
 post](https://andypicke.quarto.pub/portfolio/posts/rGridStatus/rGridStatus.html)
 and [github page](https://github.com/andypicke/rgridstatus).
@@ -25,7 +25,7 @@ and [github page](https://github.com/andypicke/rgridstatus).
 ## Installation
 
 You can install the development version of
-[rgridstatus](https://github.com/ben-pfeffer/rgridstatus2) from
+[rgridstatus2](https://github.com/ben-pfeffer/rgridstatus2) from
 [GitHub](https://github.com/) with:
 
 ``` r
@@ -41,6 +41,8 @@ my environment.
 ``` r
 # usethis::edit_r_environ() # set API key as GRIDSTATUS_API_KEY = 'XXXXXXXXXXX'
 # Sys.getenv('GRIDSTATUS_API_KEY') # test that your key is in your environment
+
+library(rgridstatus2)
 ```
 
 ## Examples
@@ -48,8 +50,6 @@ my environment.
 ### Get info on datasets available from GridStatus API:
 
 ``` r
-library(rgridstatus2)
-
 info <- get_available_datasets()
 ```
 
@@ -74,23 +74,23 @@ df <- get_gridstatus_dataset(wh_dataset = "caiso_fuel_mix",
                              end_time = "2024-09-05")
 ```
 
-### Convenience Function - Get Day Ahead Pricing
+### Convenience Function - Get Hourly Day Ahead Pricing
 
 ``` r
 # different ISOs have different location_type filter terms (case sensitive!)
 # you can also specify an exact node or hub with the location input
 # plus start and end dates and timezones (defaults to market local timezone)
 
-# s <- get_da_hourly_prices(iso = 'spp',   location_type = 'Interface',   limit = 5)
-# p <- get_da_hourly_prices(iso = 'pjm',   location_type = 'ZONE',        limit = 5)
-  e <- get_da_hourly_prices(iso = 'ercot', location_type = 'Trading Hub', limit = 5)
-# c <- get_da_hourly_prices(iso = 'caiso', location_type = 'Trading Hub', limit = 5)
-# i <- get_da_hourly_prices(iso = 'isone', location_type = 'LOAD ZONE',   limit = 5)
-# m <- get_da_hourly_prices(iso = 'miso',  location_type = 'Interface',   limit = 5)
-# e <- get_da_hourly_prices(iso = 'ercot', location_type = 'Trading Hub', limit = 5)
-# n <- get_da_hourly_prices(iso = 'nyiso', location_type = 'Zone',        limit = 5)
+# s <- get_da_prices_hourly(iso = 'spp',   location_type = 'Interface',   limit = 5)
+# p <- get_da_prices_hourly(iso = 'pjm',   location_type = 'ZONE',        limit = 5)
+  e <- get_da_prices_hourly(iso = 'ercot', location_type = 'Trading Hub', limit = 5)
+# c <- get_da_prices_hourly(iso = 'caiso', location_type = 'Trading Hub', limit = 5)
+# i <- get_da_prices_hourly(iso = 'isone', location_type = 'LOAD ZONE',   limit = 5)
+# m <- get_da_prices_hourly(iso = 'miso',  location_type = 'Interface',   limit = 5)
+# e <- get_da_prices_hourly(iso = 'ercot', location_type = 'Trading Hub', limit = 5)
+# n <- get_da_prices_hourly(iso = 'nyiso', location_type = 'Zone',        limit = 5)
 
-# b <- get_da_hourly_prices(iso = 'isone', location = 'DR.MA_Boston', 
+# b <- get_da_prices_hourly(iso = 'isone', location = 'DR.MA_Boston', 
 #                           start_time = '2024-08-08', end_time = '2024-08-09',
 #                           limit = 5)
 ```
@@ -108,8 +108,8 @@ caiso_load <- get_load_iso(iso = 'caiso', resample_frequency = '1 hour', limit =
 ava_load <- get_load_zonal(iso = 'eia', respondent = 'AVA', limit = 5)
 
 # ercot has both load zone and weather zone data available
-ercot_lz_load <- get_load_zonal(iso = 'ercot', limit = 5)
-ercot_wz_load <- get_load_zonal(iso = 'ercot_weather', limit = 5)
+# ercot_lz_load <- get_load_zonal(iso = 'ercot', limit = 5)
+# ercot_wz_load <- get_load_zonal(iso = 'ercot_weather', limit = 5)
 ```
 
 ### Convenience Function - Get Fuel Mix
@@ -130,4 +130,8 @@ carolina_fuel_mix <- get_fuel_mix(iso = 'eia',
 
 ### Convenience Function - Get Hourly Standardized Data
 
-Coming soon…
+Standardized data includes load, and generation breakdown by fuel type
+
+``` r
+isone_standardized <- get_standardized_data_hourly(iso = 'isone', limit = 5)
+```
