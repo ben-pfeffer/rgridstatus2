@@ -80,14 +80,18 @@ head(df, 5)
 ### Convenience Function - Get Day Ahead Pricing
 
 ```{r}
-# different ISOs have different location_type filter terms
-e <- get_da_hourly_prices(iso = 'ercot', location_type = 'Trading Hub', limit = 5)
-# c <- get_da_hourly_prices(iso = 'caiso', location_type = 'Trading Hub', limit = 5)
-# n <- get_da_hourly_prices(iso = 'nyiso', location_type = 'Zone',        limit = 5)
-# m <- get_da_hourly_prices(iso = 'miso',  location_type = 'Interface',   limit = 5)
+# different ISOs have different location_type filter terms (case sensitive!)
+# you can also specify an exact node or hub with the location input
+# plus start and end dates and timezones (defaults to market local timezone)
+
 # s <- get_da_hourly_prices(iso = 'spp',   location_type = 'Interface',   limit = 5)
+# p <- get_da_hourly_prices(iso = 'pjm',   location_type = 'ZONE',        limit = 5)
+  e <- get_da_hourly_prices(iso = 'ercot', location_type = 'Trading Hub', limit = 5)
+# c <- get_da_hourly_prices(iso = 'caiso', location_type = 'Trading Hub', limit = 5)
 # i <- get_da_hourly_prices(iso = 'isone', location_type = 'LOAD ZONE',   limit = 5)
-# p <- get_da_hourly_prices(iso = 'pjm',   location_type = 'ZONE',        limit = 5) # case sensitive!
+# m <- get_da_hourly_prices(iso = 'miso',  location_type = 'Interface',   limit = 5)
+# e <- get_da_hourly_prices(iso = 'ercot', location_type = 'Trading Hub', limit = 5)
+# n <- get_da_hourly_prices(iso = 'nyiso', location_type = 'Zone',        limit = 5)
 
 # b <- get_da_hourly_prices(iso = 'isone', location = 'DR.MA_Boston', 
 #                           start_time = '2024-08-08', end_time = '2024-08-09',
@@ -101,7 +105,22 @@ head(e, 5)
 Coming soon...
 
 ### Convenience Function - Get Fuel Mix
-Coming soon...
+```{r}
+# note that fuel mix data is natively in 5 minute intervals
+# but can be resampled hourly (or other intervals) if desired
+ercot_fuel_mix <- get_fuel_mix(iso = 'ercot',
+                               limit = 15,
+                               resample_frequency = '1 hour')
+head(ercot_fuel_mix, 5)
+
+# EIA publishes fuel mixes for non-market regions (hourly native resolution)
+# specify a specific region with the respondent input
+carolina_fuel_mix <- get_fuel_mix(iso = 'eia',
+                                  limit = 15,
+                                  respondent = 'CAR')
+head(carolina_fuel_mix, 5)
+```
+
 
 ### Convenience Function - Get Capacity Data
 Coming soon...

@@ -5,11 +5,15 @@
 \title{Download dataset from API}
 \usage{
 get_gridstatus_dataset(
-  wh_dataset = "caiso_fuel_mix",
+  wh_dataset,
   start_time = Sys.Date() - 5,
   end_time = Sys.Date(),
-  api_key = Sys.getenv("GRIDSTATUS_API_KEY"),
-  tz_local = "US/Pacific"
+  limit = 100,
+  timezone = "market",
+  location = "",
+  location_type = "",
+  resample_frequency = "",
+  respondent = ""
 )
 }
 \arguments{
@@ -19,9 +23,17 @@ get_gridstatus_dataset(
 
 \item{end_time}{End time. Default is today's date.}
 
-\item{api_key}{API key. Default is "GRIDSTATUS_API_KEY" stored in .Renviron file}
+\item{limit}{Number of requests to return. Default is 100.}
 
-\item{tz_local}{Local timezone to display times in column "datetime_local" (default "US/Pacific"). See available timezones with OlsonNames()}
+\item{timezone}{Default is market, which returns times in the market's local time}
+
+\item{location}{filter term for the data's location column}
+
+\item{location_type}{filter term for the data's location_type column}
+
+\item{resample_frequency}{resample the data to a lower frequency}
+
+\item{respondent}{for specifying EIA fuel mix zone}
 }
 \value{
 df: Dataframe of requested dataset

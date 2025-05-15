@@ -6,6 +6,7 @@
 #' @param timezone Default is market, which returns times in the market's local time
 #' @param location filter term for the data's location column
 #' @param location_type filter term for the data's location_type column
+#' @param resample_frequency resample the data to a lower frequency
 #' @returns dataset of hourly DA Prices for the specified ISO and date range
 #' @export
 #'
@@ -16,7 +17,8 @@ get_da_hourly_prices <- function(iso,
                                  limit = 100,
                                  timezone = 'market',
                                  location = '',
-                                 location_type = '') {
+                                 location_type = '',
+                                 resample_frequency = '') {
 
   allowed_isos <- c('ercot', 'caiso', 'isone', 'miso', 'nyiso', 'pjm', 'spp')
   if(!iso %in% allowed_isos) {
@@ -37,7 +39,8 @@ get_da_hourly_prices <- function(iso,
                                  limit,
                                  timezone,
                                  location,
-                                 location_type)
+                                 location_type,
+                                 resample_frequency)
 
   data <- get_api_request(req_url)
 }

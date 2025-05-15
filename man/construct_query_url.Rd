@@ -11,7 +11,9 @@ construct_query_url(
   limit = 100,
   timezone = "market",
   location = "",
-  location_type = ""
+  location_type = "",
+  resample_frequency = "",
+  respondent = ""
 )
 }
 \arguments{
@@ -28,6 +30,10 @@ construct_query_url(
 \item{location}{filter term for the data's location column}
 
 \item{location_type}{filter term for the data's location_type column}
+
+\item{resample_frequency}{resample the data to a lower frequency}
+
+\item{respondent}{for specifying EIA fuel mix zone}
 }
 \value{
 req_url URL for API request with specified parameters

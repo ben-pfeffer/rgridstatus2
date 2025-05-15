@@ -6,6 +6,8 @@
 #' @param timezone Default is market, which returns times in the market's local time
 #' @param location filter term for the data's location column
 #' @param location_type filter term for the data's location_type column
+#' @param resample_frequency resample the data to a lower frequency
+#' @param respondent for specifying EIA fuel mix zone
 #' @returns req_url URL for API request with specified parameters
 #' @export
 #' @seealso [get_available_datasets()]
@@ -20,7 +22,9 @@ construct_query_url <- function(wh_dataset,
                                 limit = 100,
                                 timezone = 'market',
                                 location = '',
-                                location_type = '') {
+                                location_type = '',
+                                resample_frequency = '',
+                                respondent = '') {
 
   # base url for the Gridstatusio API
   base_url <- "https://api.gridstatus.io/v1/"
@@ -36,7 +40,7 @@ construct_query_url <- function(wh_dataset,
   )
 
   # add optional filter parameters
-  if(!location == '') {
+  if(location != '') {
     location_clean <- stringr::str_replace_all(location, ' ', '%20')
 
     req_url <- paste0(req_url,
@@ -44,12 +48,27 @@ construct_query_url <- function(wh_dataset,
                       '&filter_value=', location_clean)
   }
 
-  if(!location_type == '') {
+  if(location_type != '') {
     location_type_clean <- stringr::str_replace_all(location_type, ' ', '%20')
 
     req_url <- paste0(req_url,
                       '&filter_column=location_type',
                       '&filter_value=', location_type_clean)
+  }
+
+  if(respondent != '') {
+    respondent_clean <- stringr::str_replace_all(respondent, ' ', '%20')
+
+    req_url <- paste0(req_url,
+                      '&filter_column=respondent',
+                      '&filter_value=', respondent_clean)
+  }
+
+  if(resample_frequency != '') {
+    resample_frequency_clean <- stringr::str_replace_all(resample_frequency, ' ', '%20')
+
+    req_url <- paste0(req_url, '&resample_frequency=',
+                      resample_frequency_clean)
   }
 
   return(req_url)

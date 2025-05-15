@@ -6,6 +6,8 @@
 #' @param timezone Default is market, which returns times in the market's local time
 #' @param location filter term for the data's location column
 #' @param location_type filter term for the data's location_type column
+#' @param resample_frequency resample the data to a lower frequency
+#' @param respondent for specifying EIA fuel mix zone
 #' @returns df: Dataframe of requested dataset
 #' @export
 
@@ -15,11 +17,14 @@ get_gridstatus_dataset <- function(wh_dataset,
                                    limit = 100,
                                    timezone = 'market',
                                    location = '',
-                                   location_type = '') {
+                                   location_type = '',
+                                   resample_frequency = '',
+                                   respondent = '') {
 
   # construct full request url
   req_url <- construct_query_url(wh_dataset, start_time, end_time,
-                                 limit, timezone, location, location_type)
+                                 limit, timezone, location, location_type,
+                                 resample_frequency, respondent)
 
   df <- get_api_request(req_url)
 
