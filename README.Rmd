@@ -101,7 +101,7 @@ head(e, 5)
 
 ```
 
-### Convenience Function - Get Load Data
+### Convenience Function - Get Load Data (ISO and Zonal resolutions)
 Coming soon...
 
 ### Convenience Function - Get Fuel Mix
@@ -122,5 +122,5 @@ head(carolina_fuel_mix, 5)
 ```
 
 
-### Convenience Function - Get Capacity Data
+### Convenience Function - Get Hourly Standardized Data
 Coming soon...
