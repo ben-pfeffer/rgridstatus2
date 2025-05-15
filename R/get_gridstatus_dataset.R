@@ -8,6 +8,7 @@
 #' @param location_type filter term for the data's location_type column
 #' @param resample_frequency resample the data to a lower frequency
 #' @param respondent for specifying EIA fuel mix zone
+#' @param tac_area_name for specifying CAISO Zonal load zone (any zone in WECC)
 #' @returns df: Dataframe of requested dataset
 #' @export
 
@@ -19,7 +20,8 @@ get_gridstatus_dataset <- function(wh_dataset,
                                    location = '',
                                    location_type = '',
                                    resample_frequency = '',
-                                   respondent = '') {
+                                   respondent = '',
+                                   tac_area_name = '') {
 
   # construct full request url
   req_url <- construct_query_url(wh_dataset, start_time, end_time,
