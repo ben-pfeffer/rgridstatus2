@@ -7,6 +7,8 @@
 #' @param location filter term for the data's location column
 #' @param location_type filter term for the data's location_type column
 #' @param resample_frequency resample the data to a lower frequency
+#' @param respondent for specifying EIA fuel mix zone
+#' @param tac_area_name for specifying CAISO Zonal load zone (any zone in WECC)
 #' @returns dataset of hourly DA Prices for the specified ISO and date range
 #' @export
 #'
@@ -18,7 +20,9 @@ get_da_hourly_prices <- function(iso,
                                  timezone = 'market',
                                  location = '',
                                  location_type = '',
-                                 resample_frequency = '') {
+                                 resample_frequency = '',
+                                 respondent = '',
+                                 tac_area_name = '') {
 
   allowed_isos <- c('ercot', 'caiso', 'isone', 'miso', 'nyiso', 'pjm', 'spp')
   if(!iso %in% allowed_isos) {

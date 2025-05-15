@@ -8,12 +8,12 @@
 #' @param location_type filter term for the data's location_type column
 #' @param resample_frequency resample the data to a lower frequency
 #' @param respondent for specifying EIA fuel mix zone
+#' @param tac_area_name for specifying CAISO Zonal load zone (any zone in WECC)
 #' @returns req_url URL for API request with specified parameters
 #' @export
 #' @seealso [get_available_datasets()]
 #' @examples
 #' req_url <- construct_query_url("caiso_fuel_mix", "2024-04-1", "2024-04-10")
-#'
 #'
 
 construct_query_url <- function(wh_dataset,
@@ -24,7 +24,8 @@ construct_query_url <- function(wh_dataset,
                                 location = '',
                                 location_type = '',
                                 resample_frequency = '',
-                                respondent = '') {
+                                respondent = '',
+                                tac_area_name = '') {
 
   # base url for the Gridstatusio API
   base_url <- "https://api.gridstatus.io/v1/"
@@ -41,34 +42,25 @@ construct_query_url <- function(wh_dataset,
 
   # add optional filter parameters
   if(location != '') {
-    location_clean <- stringr::str_replace_all(location, ' ', '%20')
-
-    req_url <- paste0(req_url,
-                      '&filter_column=location',
-                      '&filter_value=', location_clean)
+    req_url <- append_url(location, req_url)
   }
 
   if(location_type != '') {
-    location_type_clean <- stringr::str_replace_all(location_type, ' ', '%20')
-
-    req_url <- paste0(req_url,
-                      '&filter_column=location_type',
-                      '&filter_value=', location_type_clean)
+    req_url <- append_url(location_type, req_url)
   }
 
   if(respondent != '') {
-    respondent_clean <- stringr::str_replace_all(respondent, ' ', '%20')
+    req_url <- append_url(respondent, req_url)
+  }
 
-    req_url <- paste0(req_url,
-                      '&filter_column=respondent',
-                      '&filter_value=', respondent_clean)
+  if(tac_area_name != '') {
+    req_url <- append_url(tac_area_name, req_url)
   }
 
   if(resample_frequency != '') {
     resample_frequency_clean <- stringr::str_replace_all(resample_frequency, ' ', '%20')
 
-    req_url <- paste0(req_url, '&resample_frequency=',
-                      resample_frequency_clean)
+    req_url <- paste0(req_url, '&resample_frequency=', resample_frequency_clean)
   }
 
   return(req_url)

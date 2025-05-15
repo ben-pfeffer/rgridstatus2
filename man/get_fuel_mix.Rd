@@ -13,7 +13,8 @@ get_fuel_mix(
   location = "",
   location_type = "",
   resample_frequency = "",
-  respondent = ""
+  respondent = "",
+  tac_area_name = ""
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ get_fuel_mix(
 \item{resample_frequency}{resample the data to a lower frequency}
 
 \item{respondent}{for specifying EIA fuel mix zone}
+
+\item{tac_area_name}{for specifying CAISO Zonal load zone (any zone in WECC)}
 }
 \value{
 dataset of hourly DA Prices for the specified ISO and date range

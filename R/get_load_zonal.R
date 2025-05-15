@@ -13,19 +13,19 @@
 #' @export
 #'
 
-get_fuel_mix <- function(iso,
-                         start_time = Sys.Date() - 5,
-                         end_time = Sys.Date(),
-                         limit = 100,
-                         timezone = 'market',
-                         location = '',
-                         location_type = '',
-                         resample_frequency = '',
-                         respondent = '',
-                         tac_area_name = '') {
+get_load_zonal <- function(iso,
+                           start_time = Sys.Date() - 5,
+                           end_time = Sys.Date(),
+                           limit = 100,
+                           timezone = 'market',
+                           location = '',
+                           location_type = '',
+                           resample_frequency = '',
+                           respondent = '',
+                           tac_area_name = '') {
 
   # validate ISO input
-  allowed_isos <- c('ercot', 'caiso', 'isone', 'miso', 'nyiso', 'pjm', 'spp', 'eia')
+  allowed_isos <- c('ercot', 'ercot_weather', 'caiso', 'isone', 'miso', 'nyiso', 'pjm', 'spp', 'eia')
   if(!iso %in% allowed_isos) {
     stop(paste('Invalid ISO entered in get_fuel_mix. Must be one of', list(allowed_isos)))
   }
@@ -38,18 +38,19 @@ get_fuel_mix <- function(iso,
                list(allowed_resample_freq)))
   }
 
-  wh_dataset <- dplyr::case_when(iso == 'ercot' ~ 'ercot_fuel_mix',
-                                 iso == 'caiso' ~ 'caiso_fuel_mix',
-                                 iso == 'isone' ~ 'isone_fuel_mix',
-                                 iso == 'miso' ~ 'miso_fuel_mix',
-                                 iso == 'nyiso' ~ 'nyiso_fuel_mix',
-                                 iso == 'pjm' ~ 'pjm_fuel_mix',
-                                 iso == 'spp' ~ 'spp_fuel_mix',
-                                 iso == 'eia' ~ 'eia_fuel_mix_hourly')
+  wh_dataset <- dplyr::case_when(iso == 'ercot' ~ 'ercot_load_by_forecast_zone',
+                                 iso == 'ercot_weather' ~ 'ercot_load_by_weather_zone',
+                                 iso == 'caiso' ~ 'caiso_load_hourly',
+                                 iso == 'isone' ~ 'isone_zonal_load_real_time_hourly',
+                                 iso == 'miso' ~ 'miso_zonal_load_hourly',
+                                 iso == 'nyiso' ~ 'nyiso_load',
+                                 iso == 'pjm' ~ 'pjm_load',
+                                 iso == 'spp' ~ 'spp_hourly_load',
+                                 iso == 'eia' ~ 'eia_regional_hourly')
 
   req_url <- construct_query_url(wh_dataset, start_time, end_time, limit,
                                  timezone, location, location_type,
-                                 resample_frequency, respondent)
+                                 resample_frequency, respondent, tac_area_name)
 
   data <- get_api_request(req_url)
 }

@@ -13,7 +13,8 @@ construct_query_url(
   location = "",
   location_type = "",
   resample_frequency = "",
-  respondent = ""
+  respondent = "",
+  tac_area_name = ""
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ construct_query_url(
 \item{resample_frequency}{resample the data to a lower frequency}
 
 \item{respondent}{for specifying EIA fuel mix zone}
+
+\item{tac_area_name}{for specifying CAISO Zonal load zone (any zone in WECC)}
 }
 \value{
 req_url URL for API request with specified parameters
@@ -43,7 +46,6 @@ Build URL for API data request
 }
 \examples{
 req_url <- construct_query_url("caiso_fuel_mix", "2024-04-1", "2024-04-10")
-
 
 }
 \seealso{
