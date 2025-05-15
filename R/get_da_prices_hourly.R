@@ -13,7 +13,7 @@
 #' @export
 #'
 
-get_da_hourly_prices <- function(iso,
+get_da_prices_hourly <- function(iso,
                                  start_time = Sys.Date() - 5,
                                  end_time = Sys.Date(),
                                  limit = 100,
@@ -37,14 +37,9 @@ get_da_hourly_prices <- function(iso,
                                  iso == 'pjm' ~ 'pjm_lmp_day_ahead_hourly',
                                  iso == 'spp' ~ 'spp_lmp_day_ahead_hourly')
 
-  req_url <- construct_query_url(wh_dataset,
-                                 start_time,
-                                 end_time,
-                                 limit,
-                                 timezone,
-                                 location,
-                                 location_type,
-                                 resample_frequency)
+  req_url <- construct_query_url(wh_dataset, start_time, end_time, limit,
+                                 timezone, location, location_type,
+                                 resample_frequency, respondent, tac_area_name)
 
   data <- get_api_request(req_url)
 }

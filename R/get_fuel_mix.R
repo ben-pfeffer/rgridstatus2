@@ -49,7 +49,7 @@ get_fuel_mix <- function(iso,
 
   req_url <- construct_query_url(wh_dataset, start_time, end_time, limit,
                                  timezone, location, location_type,
-                                 resample_frequency, respondent)
+                                 resample_frequency, respondent, tac_area_name)
 
   data <- get_api_request(req_url)
 }
