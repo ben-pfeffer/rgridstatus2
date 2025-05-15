@@ -73,8 +73,6 @@ df <- get_gridstatus_dataset(wh_dataset = "caiso_fuel_mix",
                              start_time = "2024-09-03", 
                              end_time = "2024-09-05")
 
-head(df, 5)
-
 ```
 
 ### Convenience Function - Get Day Ahead Pricing
@@ -97,12 +95,23 @@ head(df, 5)
 #                           start_time = '2024-08-08', end_time = '2024-08-09',
 #                           limit = 5)
 
-head(e, 5)
-
 ```
 
 ### Convenience Function - Get Load Data (ISO and Zonal resolutions)
-Coming soon...
+```{r}
+# get_load_iso() fetches ISO-level load data
+# most ISOs default to 5 minute native granularity
+caiso_load <- get_load_iso(iso = 'caiso', resample_frequency = '1 hour', limit = 5)
+
+# get_load_zonal() fetches Zonal-level load data
+# Nonmarket EIA data can be found through the get_load_zonal function (native hourly)
+# Specify a zone of interest with the location parameter
+ava_load <- get_load_zonal(iso = 'eia', respondent = 'AVA', limit = 5)
+
+# ercot has both load zone and weather zone data available
+ercot_lz_load <- get_load_zonal(iso = 'ercot', limit = 5)
+ercot_wz_load <- get_load_zonal(iso = 'ercot_weather', limit = 5)
+```
 
 ### Convenience Function - Get Fuel Mix
 ```{r}
@@ -111,14 +120,12 @@ Coming soon...
 ercot_fuel_mix <- get_fuel_mix(iso = 'ercot',
                                limit = 15,
                                resample_frequency = '1 hour')
-head(ercot_fuel_mix, 5)
 
 # EIA publishes fuel mixes for non-market regions (hourly native resolution)
 # specify a specific region with the respondent input
 carolina_fuel_mix <- get_fuel_mix(iso = 'eia',
                                   limit = 15,
                                   respondent = 'CAR')
-head(carolina_fuel_mix, 5)
 ```
 
 

@@ -72,26 +72,6 @@ sources
 df <- get_gridstatus_dataset(wh_dataset = "caiso_fuel_mix", 
                              start_time = "2024-09-03", 
                              end_time = "2024-09-05")
-
-head(df, 5)
-#>        interval_start_local        interval_start_utc        interval_end_local
-#> 1 2024-09-03T00:00:00-07:00 2024-09-03T07:00:00+00:00 2024-09-03T00:05:00-07:00
-#> 2 2024-09-03T00:05:00-07:00 2024-09-03T07:05:00+00:00 2024-09-03T00:10:00-07:00
-#> 3 2024-09-03T00:10:00-07:00 2024-09-03T07:10:00+00:00 2024-09-03T00:15:00-07:00
-#> 4 2024-09-03T00:15:00-07:00 2024-09-03T07:15:00+00:00 2024-09-03T00:20:00-07:00
-#> 5 2024-09-03T00:20:00-07:00 2024-09-03T07:20:00+00:00 2024-09-03T00:25:00-07:00
-#>            interval_end_utc solar wind geothermal biomass biogas small_hydro
-#> 1 2024-09-03T07:05:00+00:00   -11 2225        736     323    159         255
-#> 2 2024-09-03T07:10:00+00:00   -10 2211        736     325    159         253
-#> 3 2024-09-03T07:15:00+00:00   -10 2165        737     327    156         252
-#> 4 2024-09-03T07:20:00+00:00   -11 2122        736     326    156         253
-#> 5 2024-09-03T07:25:00+00:00   -11 2077        737     328    156         251
-#>   coal nuclear natural_gas large_hydro batteries imports other
-#> 1    0    2253       12097        2732      -456    5764     0
-#> 2    0    2252       12303        2523       158    5267     0
-#> 3    0    2250       12406        2491       311    5020     0
-#> 4    0    2251       12484        2471       261    4994     0
-#> 5    0    2249       12584        2461       219    4969     0
 ```
 
 ### Convenience Function - Get Day Ahead Pricing
@@ -113,25 +93,24 @@ head(df, 5)
 # b <- get_da_hourly_prices(iso = 'isone', location = 'DR.MA_Boston', 
 #                           start_time = '2024-08-08', end_time = '2024-08-09',
 #                           limit = 5)
-
-head(e, 5)
-#>        interval_start_local        interval_start_utc        interval_end_local
-#> 1 2025-05-10T00:00:00-05:00 2025-05-10T05:00:00+00:00 2025-05-10T01:00:00-05:00
-#> 2 2025-05-10T00:00:00-05:00 2025-05-10T05:00:00+00:00 2025-05-10T01:00:00-05:00
-#> 3 2025-05-10T00:00:00-05:00 2025-05-10T05:00:00+00:00 2025-05-10T01:00:00-05:00
-#> 4 2025-05-10T00:00:00-05:00 2025-05-10T05:00:00+00:00 2025-05-10T01:00:00-05:00
-#> 5 2025-05-10T00:00:00-05:00 2025-05-10T05:00:00+00:00 2025-05-10T01:00:00-05:00
-#>            interval_end_utc   location location_type           market   spp
-#> 1 2025-05-10T06:00:00+00:00  HB_BUSAVG   Trading Hub DAY_AHEAD_HOURLY 41.19
-#> 2 2025-05-10T06:00:00+00:00 HB_HOUSTON   Trading Hub DAY_AHEAD_HOURLY 40.05
-#> 3 2025-05-10T06:00:00+00:00  HB_HUBAVG   Trading Hub DAY_AHEAD_HOURLY 41.53
-#> 4 2025-05-10T06:00:00+00:00   HB_NORTH   Trading Hub DAY_AHEAD_HOURLY 41.65
-#> 5 2025-05-10T06:00:00+00:00     HB_PAN   Trading Hub DAY_AHEAD_HOURLY 44.20
 ```
 
 ### Convenience Function - Get Load Data (ISO and Zonal resolutions)
 
-Coming soon…
+``` r
+# get_load_iso() fetches ISO-level load data
+# most ISOs default to 5 minute native granularity
+caiso_load <- get_load_iso(iso = 'caiso', resample_frequency = '1 hour', limit = 5)
+
+# get_load_zonal() fetches Zonal-level load data
+# Nonmarket EIA data can be found through the get_load_zonal function (native hourly)
+# Specify a zone of interest with the location parameter
+ava_load <- get_load_zonal(iso = 'eia', respondent = 'AVA', limit = 5)
+
+# ercot has both load zone and weather zone data available
+ercot_lz_load <- get_load_zonal(iso = 'ercot', limit = 5)
+ercot_wz_load <- get_load_zonal(iso = 'ercot_weather', limit = 5)
+```
 
 ### Convenience Function - Get Fuel Mix
 
@@ -141,62 +120,12 @@ Coming soon…
 ercot_fuel_mix <- get_fuel_mix(iso = 'ercot',
                                limit = 15,
                                resample_frequency = '1 hour')
-head(ercot_fuel_mix, 5)
-#>        interval_start_local        interval_start_utc        interval_end_local
-#> 1 2025-05-10T00:00:00-05:00 2025-05-10T05:00:00+00:00 2025-05-10T01:00:00-05:00
-#> 2 2025-05-10T01:00:00-05:00 2025-05-10T06:00:00+00:00 2025-05-10T02:00:00-05:00
-#> 3 2025-05-10T02:00:00-05:00 2025-05-10T07:00:00+00:00 2025-05-10T03:00:00-05:00
-#> 4 2025-05-10T03:00:00-05:00 2025-05-10T08:00:00+00:00 2025-05-10T04:00:00-05:00
-#> 5 2025-05-10T04:00:00-05:00 2025-05-10T09:00:00+00:00 2025-05-10T05:00:00-05:00
-#>            interval_end_utc coal_and_lignite    hydro  nuclear power_storage
-#> 1 2025-05-10T06:00:00+00:00         7817.357 135.8202 3831.783      337.7860
-#> 2 2025-05-10T07:00:00+00:00         7689.243 139.5328 3832.024      260.0565
-#> 3 2025-05-10T08:00:00+00:00         7655.841 139.7241 3833.212      220.3583
-#> 4 2025-05-10T09:00:00+00:00         7611.821 139.8233 3833.630      175.8334
-#> 5 2025-05-10T10:00:00+00:00         7530.173 140.1089 3834.102      141.1753
-#>       solar     wind natural_gas     other
-#> 1 0.1936253 5789.068    27209.80 0.1938161
-#> 2 0.2687631 5875.986    25334.53 0.1893156
-#> 3 0.3541457 6048.499    23371.16 0.2111240
-#> 4 0.4287731 6708.144    22302.09 0.2020901
-#> 5 0.3805516 7614.964    21271.78 0.2436381
 
 # EIA publishes fuel mixes for non-market regions (hourly native resolution)
 # specify a specific region with the respondent input
 carolina_fuel_mix <- get_fuel_mix(iso = 'eia',
                                   limit = 15,
                                   respondent = 'CAR')
-head(carolina_fuel_mix, 5)
-#>          interval_start_utc          interval_end_utc respondent
-#> 1 2025-05-10T00:00:00+00:00 2025-05-10T01:00:00+00:00        CAR
-#> 2 2025-05-10T01:00:00+00:00 2025-05-10T02:00:00+00:00        CAR
-#> 3 2025-05-10T02:00:00+00:00 2025-05-10T03:00:00+00:00        CAR
-#> 4 2025-05-10T03:00:00+00:00 2025-05-10T04:00:00+00:00        CAR
-#> 5 2025-05-10T04:00:00+00:00 2025-05-10T05:00:00+00:00        CAR
-#>   respondent_name coal hydro natural_gas nuclear other petroleum solar wind
-#> 1       Carolinas 5055  1419        4959   11996   919         0    16   NA
-#> 2       Carolinas 4806  1269        4575   11998   927         0    -6   NA
-#> 3       Carolinas 4575   817        4064   12008   878         0    -3   NA
-#> 4       Carolinas 3921   652        3779   12013   817         0    -6   NA
-#> 5       Carolinas 3382   450        3524   12024   762         0    -4   NA
-#>   battery_storage pumped_storage solar_with_integrated_battery_storage
-#> 1               0           1967                                    -1
-#> 2               0           1776                                     0
-#> 3               0           1444                                    -2
-#> 4               0            681                                    -1
-#> 5               0             -2                                    -1
-#>   unknown_energy_storage geothermal other_energy_storage
-#> 1                     NA         NA                   NA
-#> 2                     NA         NA                   NA
-#> 3                     NA         NA                   NA
-#> 4                     NA         NA                   NA
-#> 5                     NA         NA                   NA
-#>   wind_with_integrated_battery_storage
-#> 1                                   NA
-#> 2                                   NA
-#> 3                                   NA
-#> 4                                   NA
-#> 5                                   NA
 ```
 
 ### Convenience Function - Get Hourly Standardized Data

@@ -1,7 +1,7 @@
 #' Make API GET request and return data
 #' @param query_url URL for the API query
 #' @param api_key API key; Defaults is key saved in .renviron file as "GRIDSTATUS_API_KEY"
-#' @param parse_request boolean - TRUE returns data; false returns raw JSON. Default is TRUE
+#' @param parse_request boolean - TRUE returns data; FALSE returns raw JSON. Default is TRUE
 #' @returns data from the API response
 #' @export
 

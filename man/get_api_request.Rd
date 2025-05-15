@@ -15,7 +15,7 @@ get_api_request(
 
 \item{api_key}{API key; Defaults is key saved in .renviron file as "GRIDSTATUS_API_KEY"}
 
-\item{parse_request}{boolean - TRUE returns data; false returns raw JSON. Default is TRUE}
+\item{parse_request}{boolean - TRUE returns data; FALSE returns raw JSON. Default is TRUE}
 }
 \value{
 data from the API response
