@@ -31,7 +31,7 @@ get_da_prices_hourly <- function(iso,
 
   wh_dataset <- dplyr::case_when(iso == 'ercot' ~ 'ercot_spp_day_ahead_hourly',
                                  iso == 'caiso' ~ 'caiso_lmp_day_ahead_hourly',
-                                 iso == 'isone' ~ 'isone_lmp_real_time_hourly_final',
+                                 iso == 'isone' ~ 'isone_lmp_day_ahead_hourly',
                                  iso == 'miso' ~ 'miso_lmp_day_ahead_hourly',
                                  iso == 'nyiso' ~ 'nyiso_lmp_day_ahead_hourly',
                                  iso == 'pjm' ~ 'pjm_lmp_day_ahead_hourly',
