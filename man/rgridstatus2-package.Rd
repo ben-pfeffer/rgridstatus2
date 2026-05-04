@@ -6,13 +6,13 @@
 \alias{rgridstatus2-package}
 \title{rgridstatus2: API Wrapper For GridStatus}
 \description{
-What the package does (one paragraph).
+R wrapper for the Gridstatus API. Convenience functions for day ahead prices, load, and fuel mix.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/bpfeffer/rgridstatus2}
-  \item Report bugs at \url{https://github.com/bpfeffer/rgridstatus2/issues}
+  \item \url{https://github.com/ben-pfeffer/rgridstatus2}
+  \item Report bugs at \url{https://github.com/ben-pfeffer/rgridstatus2/issues}
 }
 
 }
