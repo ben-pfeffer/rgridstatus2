@@ -6,7 +6,7 @@
 \alias{rgridstatus2-package}
 \title{rgridstatus2: API Wrapper For GridStatus}
 \description{
-R wrapper for the Gridstatus API. Convenience functions for day ahead prices, load, and fuel mix.
+"R wrapper for the Gridstatus API. Convenience functions for day ahead prices, load, and fuel mix."
 }
 \seealso{
 Useful links:
