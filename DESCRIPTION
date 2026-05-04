@@ -4,7 +4,8 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Ben", "Pfeffer", , "bpfffr@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Description: R wrapper for the Gridstatus API. 
+Convenience functions for day ahead prices, load, and fuel mix.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -17,8 +18,8 @@ Imports:
     purrr,
     stringr,
     tidyr
-URL: https://github.com/bpfeffer/rgridstatus2
-BugReports: https://github.com/bpfeffer/rgridstatus2/issues
+URL: https://github.com/ben-pfeffer/rgridstatus2
+BugReports: https://github.com/ben-pfeffer/rgridstatus2/issues
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
