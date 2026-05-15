@@ -162,9 +162,9 @@ pull_historical_lmps_national <- function(start_date, end_date) {
   # write outputs to excel file
   wb <- wb_workbook() %>%
     wb_add_worksheet('Prices Wide') %>%
-    wb_add_data(x = hourly_lmps_wide) %>%
+    openxlsx2::wb_add_data(x = hourly_lmps_wide) %>%
     wb_add_worksheet('Prices Long') %>%
-    wb_add_data(x = hourly_lmps_national)
+    openxlsx2::wb_add_data(x = hourly_lmps_national)
 
   wb_save(wb, paste0("National Historical Prices " , start_date,
                      ' to ', end_date, ".xlsx"))
