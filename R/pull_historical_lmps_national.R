@@ -9,6 +9,9 @@
 #'
 #' @export
 
+library(dplyr)
+library(lubridate)
+
 # main level function to download hourly DA LMPs for all ISOs nationally
 pull_historical_lmps_national <- function(start_date, end_date) {
 
