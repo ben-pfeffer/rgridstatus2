@@ -43,6 +43,10 @@ my environment.
 # Sys.getenv('GRIDSTATUS_API_KEY') # test that your key is in your environment
 
 library(rgridstatus2)
+
+# To Update Package
+# detach('package:rgridstatus2', unload = TRUE)
+# devtools::install_github('ben-pfeffer/rgridstatus2', force = TRUE)
 ```
 
 ## Examples
@@ -62,8 +66,8 @@ Most of the “sources” are
 # input is info from get_available_datasets()
 sources <- get_source_names(info)
 sources
-#>  [1] "all"   "caiso" "eia"   "ercot" "ieso"  "isone" "isos"  "miso"  "nyiso"
-#> [10] "pjm"   "spp"
+#>  [1] "aeso"  "all"   "caiso" "eia"   "ercot" "hq"    "ieso"  "isone" "isos" 
+#> [10] "miso"  "nyiso" "pjm"   "spp"
 ```
 
 ### Download a dataset
@@ -93,6 +97,46 @@ df <- get_gridstatus_dataset(wh_dataset = "caiso_fuel_mix",
 # b <- get_da_prices_hourly(iso = 'isone', location = 'DR.MA_Boston', 
 #                           start_time = '2024-08-08', end_time = '2024-08-09',
 #                           limit = 5)
+```
+
+### Convenience Function - Get Hourly Day Pricing Nationally
+
+``` r
+# Pull historical prices for all ISOs nationally
+pull_historical_lmps_national(start_date = '2025-01-01', 
+                              end_date   = '2025-01-04')
+#> Warning: package 'openxlsx2' was built under R version 4.4.3
+#> Downloading historical prices for ISONE...
+#> Finished downloading for ISONE in 0 minutes
+#> Downloading historical prices for NYISO...
+#> Finished downloading for NYISO in 0 minutes
+#> Downloading historical prices for PJM...
+#> Finished downloading for PJM in 0 minutes
+#> Downloading historical prices for MISO...
+#> Finished downloading for MISO in 0.1 minutes
+#> Downloading historical prices for SPP...
+#> Finished downloading for SPP in 0 minutes
+#> Downloading historical prices for ERCOT...
+#> Finished downloading for ERCOT in 0 minutes
+#> Downloading historical prices for CAISO...
+#> Finished downloading for CAISO in 0 minutes
+#> # A tibble: 72 × 17
+#>    interval_start_local interval_end_local  market   day  year month  hour ISONE
+#>    <dttm>               <dttm>              <chr>  <int> <dbl> <dbl> <dbl> <dbl>
+#>  1 2025-01-01 00:00:00  2025-01-01 01:00:00 DAY_A…     1  2025     1     1  37.2
+#>  2 2025-01-01 01:00:00  2025-01-01 02:00:00 DAY_A…     1  2025     1     2  35.1
+#>  3 2025-01-01 02:00:00  2025-01-01 03:00:00 DAY_A…     1  2025     1     3  31.6
+#>  4 2025-01-01 03:00:00  2025-01-01 04:00:00 DAY_A…     1  2025     1     4  30.0
+#>  5 2025-01-01 04:00:00  2025-01-01 05:00:00 DAY_A…     1  2025     1     5  28.5
+#>  6 2025-01-01 05:00:00  2025-01-01 06:00:00 DAY_A…     1  2025     1     6  29.2
+#>  7 2025-01-01 06:00:00  2025-01-01 07:00:00 DAY_A…     1  2025     1     7  29.6
+#>  8 2025-01-01 07:00:00  2025-01-01 08:00:00 DAY_A…     1  2025     1     8  30.1
+#>  9 2025-01-01 08:00:00  2025-01-01 09:00:00 DAY_A…     1  2025     1     9  30.8
+#> 10 2025-01-01 09:00:00  2025-01-01 10:00:00 DAY_A…     1  2025     1    10  33.5
+#> # ℹ 62 more rows
+#> # ℹ 9 more variables: .Z.NEMASSBOST <dbl>, NYISO <dbl>, N.Y.C. <dbl>,
+#> #   PJM <dbl>, MISO <dbl>, SPPNORTH_HUB <dbl>, SPPSOUTH_HUB <dbl>, ERCOT <dbl>,
+#> #   CAISO <dbl>
 ```
 
 ### Convenience Function - Get Load Data (ISO and Zonal resolutions)
