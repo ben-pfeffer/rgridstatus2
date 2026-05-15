@@ -11,6 +11,7 @@
 
 library(dplyr)
 library(lubridate)
+library(openxlsx2)
 
 # main level function to download hourly DA LMPs for all ISOs nationally
 pull_historical_lmps_national <- function(start_date, end_date) {
