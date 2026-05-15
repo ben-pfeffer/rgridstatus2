@@ -134,7 +134,8 @@ pull_historical_lmps_national <- function(start_date, end_date) {
 
     end_t <- Sys.time()
     diff <- difftime(end_t, start_t, units = 'mins')
-    message(paste('Finished downloading for', toupper(iso), 'in', diff, 'minutes'))
+    message(paste('Finished downloading for', toupper(iso), 'in', round(diff,1),
+                  'minutes'))
   }
 
   # format months and dates
