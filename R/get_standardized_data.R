@@ -18,11 +18,11 @@ get_standardized_data_hourly <- function(iso,
                                          end_time = Sys.Date(),
                                          limit = 100,
                                          timezone = 'market',
-                                         location = '',
-                                         location_type = '',
-                                         resample_frequency = '',
-                                         respondent = '',
-                                         tac_area_name = '') {
+                                         location = NA,
+                                         location_type = NA,
+                                         resample_frequency = NA,
+                                         respondent = NA,
+                                         tac_area_name = NA) {
 
   allowed_isos <- c('ercot', 'caiso', 'isone', 'miso', 'nyiso', 'pjm', 'spp')
   if(!iso %in% allowed_isos) {
