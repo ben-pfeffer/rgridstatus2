@@ -17,7 +17,6 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Ben Pfeffer \email{bpfffr@gmail.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
-
+Ben Pfeffer
 }
 \keyword{internal}
