@@ -41,23 +41,23 @@ construct_query_url <- function(wh_dataset,
   )
 
   # add optional filter parameters
-  if(!is.na(location)) {
+  if(!is.na(location)[1]) {
     req_url <- append_url(location, req_url)
   }
 
-  if(!is.na(location_type)) {
+  if(!is.na(location_type)[1]) {
     req_url <- append_url(location_type, req_url)
   }
 
-  if(!is.na(respondent)) {
+  if(!is.na(respondent)[1]) {
     req_url <- append_url(respondent, req_url)
   }
 
-  if(!is.na(tac_area_name)) {
+  if(!is.na(tac_area_name)[1]) {
     req_url <- append_url(tac_area_name, req_url)
   }
 
-  if(!is.na(resample_frequency)) {
+  if(!is.na(resample_frequency)[1]) {
     resample_frequency_clean <- stringr::str_replace_all(resample_frequency, ' ', '%20')
 
     req_url <- paste0(req_url, '&resample_frequency=', resample_frequency_clean)
