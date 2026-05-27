@@ -21,11 +21,11 @@ construct_query_url <- function(wh_dataset,
                                 end_time = Sys.Date(),
                                 limit = 100,
                                 timezone = 'market',
-                                location = '',
-                                location_type = '',
-                                resample_frequency = '',
-                                respondent = '',
-                                tac_area_name = '') {
+                                location = NA,
+                                location_type = NA,
+                                resample_frequency = NA,
+                                respondent = NA,
+                                tac_area_name = NA) {
 
   # base url for the Gridstatusio API
   base_url <- "https://api.gridstatus.io/v1/"
@@ -41,23 +41,23 @@ construct_query_url <- function(wh_dataset,
   )
 
   # add optional filter parameters
-  if(location != '') {
+  if(!is.null(location)) {
     req_url <- append_url(location, req_url)
   }
 
-  if(location_type != '') {
+  if(!is.null(location_type)) {
     req_url <- append_url(location_type, req_url)
   }
 
-  if(respondent != '') {
+  if(!is.null(respondent)) {
     req_url <- append_url(respondent, req_url)
   }
 
-  if(tac_area_name != '') {
+  if(!is.null(tac_area_name)) {
     req_url <- append_url(tac_area_name, req_url)
   }
 
-  if(resample_frequency != '') {
+  if(!is.null(resample_frequency)) {
     resample_frequency_clean <- stringr::str_replace_all(resample_frequency, ' ', '%20')
 
     req_url <- paste0(req_url, '&resample_frequency=', resample_frequency_clean)
