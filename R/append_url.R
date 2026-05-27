@@ -16,7 +16,7 @@ append_url <- function(variable_name, req_url = req_url) {
     }
 
   else if(length(variable_name) > 1) {
-    variable_value_clean <- stringr::str_replace_all(location, ' ', '%20')
+    variable_value_clean <- stringr::str_replace_all(variable_name, ' ', '%20')
     variable_name <- deparse(substitute(variable_name))
     filter_operator <- 'in'
 
