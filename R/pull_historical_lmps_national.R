@@ -205,6 +205,7 @@ download_historical_data <- function(start_date, end_date, iso) {
     # try to download data
     message(paste0('Downloading historical prices for ', toupper(iso), '...'))
     d <- try(get_da_prices_hourly(iso = iso,  location_type = location_type,
+                                  resample_frequency = '1 hour',
                                   limit = 8760*num_locations*1.1,
                                   start_time = start_date, end_time = end_date))
 
@@ -213,6 +214,7 @@ download_historical_data <- function(start_date, end_date, iso) {
       message(paste0("Error downloading ", iso, ' from ', start_date, ' to ',
                      end_date, '. Retrying...'))
       d <- try(get_da_prices_hourly(iso = iso,  location_type = location_type,
+                                    resample_frequency = '1 hour',
                                     limit = 8760*num_locations*1.1,
                                     start_time = start_date, end_time = end_date))
 
