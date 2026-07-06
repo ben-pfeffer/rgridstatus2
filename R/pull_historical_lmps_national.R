@@ -168,7 +168,7 @@ pull_historical_lmps_national <- function(start_date, end_date) {
 
 # helper function to avoid 100,000 row gridstatus limit per API call
 calculate_expected_rows <- function(start_date, end_date, num_locations) {
-  num_days <- difftime(as.Date(end_date), as.Date(start_date))
+  num_days <- difftime(lubridate::mdy(end_date), lubridate::mdy(start_date))
   num_rows <- num_days * 24 * num_locations
 }
 
