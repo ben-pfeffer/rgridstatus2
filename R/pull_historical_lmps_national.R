@@ -3,19 +3,25 @@
 #' @param start_date The first day of data to pull
 #' @param end_date NOT INCLUSIVE! Gridstatus returns data for dates BEFORE this date,
 #' but does not return data for this date
+#' @param price_type DA for Day Ahead or RT for Real Time Prices
 #'
 #' @return a table of historical hourly LMPs for all ISOs (wide format). The function
-#' also saves an excel file with all the data
+#' also saves an excel file with all the dataß
 #'
 #' @export
 
 # main level function to download hourly DA LMPs for all ISOs nationally
-pull_historical_lmps_national <- function(start_date, end_date) {
+pull_historical_lmps_national <- function(start_date, end_date, price_type) {
+
+  allowed_price_types <- c('da', 'rt')
+  if(!tolower(price_type) %in% allowed_price_types) {
+    stop(paste('Invalid price_type entered. Must be one of', list(allowed_price_types)))
+  }
 
   # generic clean up default gridstatus data pull
   clean_up_raw_gridstatus <- function(df) {
     df_clean <- df %>%
-      select(interval_start_local, interval_end_local, market, location,
+      select(interval_start_local, interval_end_local, location,
              location_type, lmp) %>%
       # remove text after final -
       mutate(interval_start_local = stringr::str_replace(interval_start_local,
@@ -25,21 +31,22 @@ pull_historical_lmps_national <- function(start_date, end_date) {
   }
 
   # idiosyncratic clean up processes by ISO
-  clean_up_iso <- function(df_raw, iso) {
+  clean_up_iso <- function(df_raw, iso, price_type) {
 
     if(iso == 'isone') {
       tmp_clean1 <- df_raw %>%
         clean_up_raw_gridstatus() %>%
         group_by(interval_start_local) %>%
         summarize(interval_end_local = first(interval_end_local),
-                  market = first(market),
+                  market = ifelse(tolower(price_type) == 'da', 'Day Ahead', 'Real Time'),
                   location = 'ISONE',
                   location_type = 'Average of Hub Prices',
                   lmp = mean(lmp))
 
       tmp_clean2 <- df_raw %>%
         clean_up_raw_gridstatus() %>%
-        filter(location == '.Z.NEMASSBOST')
+        filter(location == '.Z.NEMASSBOST') %>%
+        mutate(market = ifelse(tolower(price_type) == 'da', 'Day Ahead', 'Real Time'))
 
       tmp_clean <- rbind(tmp_clean1, tmp_clean2)
       return(tmp_clean)
@@ -50,14 +57,15 @@ pull_historical_lmps_national <- function(start_date, end_date) {
         clean_up_raw_gridstatus() %>%
         group_by(interval_start_local) %>%
         summarize(interval_end_local = first(interval_end_local),
-                  market = first(market),
+                  market = ifelse(tolower(price_type) == 'da', 'Day Ahead', 'Real Time'),
                   location = 'NYISO',
                   location_type = 'Average of Zonal Prices',
                   lmp = mean(lmp))
 
       tmp_clean2 <- df_raw %>%
         clean_up_raw_gridstatus() %>%
-        filter(location == 'N.Y.C.')
+        filter(location == 'N.Y.C.') %>%
+        mutate(market = ifelse(tolower(price_type) == 'da', 'Day Ahead', 'Real Time'))
 
       tmp_clean <- rbind(tmp_clean1, tmp_clean2)
       return(tmp_clean)
@@ -68,7 +76,7 @@ pull_historical_lmps_national <- function(start_date, end_date) {
         clean_up_raw_gridstatus() %>%
         group_by(interval_start_local) %>%
         summarize(interval_end_local = first(interval_end_local),
-                  market = first(market),
+                  market = ifelse(tolower(price_type) == 'da', 'Day Ahead', 'Real Time'),
                   location = 'PJM',
                   location_type = 'Average of Zonal Prices',
                   lmp = mean(lmp))
@@ -81,7 +89,7 @@ pull_historical_lmps_national <- function(start_date, end_date) {
         clean_up_raw_gridstatus() %>%
         group_by(interval_start_local) %>%
         summarize(interval_end_local = first(interval_end_local),
-                  market = first(market),
+                  market = ifelse(tolower(price_type) == 'da', 'Day Ahead', 'Real Time'),
                   location = 'MISO',
                   location_type = 'Average of Interface Prices',
                   lmp = mean(lmp))
@@ -92,28 +100,38 @@ pull_historical_lmps_national <- function(start_date, end_date) {
 
     if(iso == 'spp') {
       tmp_clean <- df_raw %>%
-        clean_up_raw_gridstatus()
+        mutate(location_type = 'Hub') %>%
+        clean_up_raw_gridstatus() %>%
+        group_by(interval_start_local) %>%
+        summarize(interval_end_local = first(interval_end_local),
+                  market = ifelse(tolower(price_type) == 'da', 'Day Ahead', 'Real Time'),
+                  location = 'SPP',
+                  location_type = 'Average of Interface Prices',
+                  lmp = mean(lmp))
 
       return(tmp_clean)
     }
 
     if(iso == 'ercot') {
       tmp_clean <- df_raw %>%
+        mutate(location_type = 'Hub') %>%
         rename(lmp = spp) %>%
         clean_up_raw_gridstatus() %>%
         filter(location == 'HB_HUBAVG') %>%
         mutate(location = 'ERCOT',
-               location_type = 'Hub Average')
+               location_type = 'Hub Average',
+               market = ifelse(tolower(price_type) == 'da', 'Day Ahead', 'Real Time'))
 
       return(tmp_clean)
     }
 
     if(iso == 'caiso') {
       tmp_clean <- df_raw %>%
+        mutate(location_type = 'Hub') %>%
         clean_up_raw_gridstatus() %>%
         group_by(interval_start_local) %>%
         summarize(interval_end_local = first(interval_end_local),
-                  market = first(market),
+                  market = ifelse(tolower(price_type) == 'da', 'Day Ahead', 'Real Time'),
                   location = 'CAISO',
                   location_type = 'Average of Hub Prices',
                   lmp = mean(lmp))
@@ -128,8 +146,8 @@ pull_historical_lmps_national <- function(start_date, end_date) {
   for(iso in iso_list) {
     start_t <- Sys.time()
 
-    tmp <- download_historical_data(start_date, end_date, iso)
-    tmp_clean <- clean_up_iso(tmp, iso)
+    tmp <- download_historical_data(start_date, end_date, iso, price_type)
+    tmp_clean <- clean_up_iso(tmp, iso, price_type)
     hourly_lmps_national <- rbind(hourly_lmps_national, tmp_clean)
 
     end_t <- Sys.time()
@@ -173,7 +191,7 @@ calculate_expected_rows <- function(start_date, end_date, num_locations) {
 }
 
 # function to download hourly LMPs for a given ISO between given dates
-download_historical_data <- function(start_date, end_date, iso) {
+download_historical_data <- function(start_date, end_date, iso, price_type) {
 
   num_locations <- case_when(iso == 'isone' ~ 8,
                              iso == 'nyiso' ~ 15,
@@ -202,27 +220,54 @@ download_historical_data <- function(start_date, end_date, iso) {
                                iso == 'ercot' ~ 'Trading Hub',
                                iso == 'caiso' ~ 'Trading Hub')
 
-    # try to download data
-    message(paste0('Downloading historical prices for ', toupper(iso), '...'))
-    d <- try(get_da_prices_hourly(iso = iso,  location_type = location_type,
-                                  resample_frequency = '1 hour',
-                                  limit = 8760*num_locations*1.1,
-                                  start_time = start_date, end_time = end_date))
-
-    # if download fails, try again once
-    if (inherits(d, "try-error")) {
-      message(paste0("Error downloading ", iso, ' from ', start_date, ' to ',
-                     end_date, '. Retrying...'))
+    if(tolower(price_type) == 'da') {
+      # try to download day ahead data
+      message(paste0('Downloading historical Day Ahead prices for ', toupper(iso), '...'))
       d <- try(get_da_prices_hourly(iso = iso,  location_type = location_type,
                                     resample_frequency = '1 hour',
                                     limit = 8760*num_locations*1.1,
                                     start_time = start_date, end_time = end_date))
 
-      # if download fails a second time, abort
+      # if download fails, try again once
       if (inherits(d, "try-error")) {
-        message(paste0("Another Error downloading ", iso, '. Aborting Script.'))
+        message(paste0("Error downloading ", iso, ' DA prices from ', start_date, ' to ',
+                       end_date, '. Retrying...'))
+        d <- try(get_da_prices_hourly(iso = iso,  location_type = location_type,
+                                      resample_frequency = '1 hour',
+                                      limit = 8760*num_locations*1.1,
+                                      start_time = start_date, end_time = end_date))
+
+        # if download fails a second time, abort
+        if (inherits(d, "try-error")) {
+          message(paste0("Another Error downloading ", iso, 'DA prices. Aborting Script.'))
+        }
+      }
+    }
+
+    if(tolower(price_type) == 'rt') {
+      # try to download real time data
+      message(paste0('Downloading historical Real Time prices for ', toupper(iso), '...'))
+      d <- try(get_rt_prices_hourly(iso = iso,  location_type = location_type,
+                                    resample_frequency = '1 hour',
+                                    limit = 8760*num_locations*1.1,
+                                    start_time = start_date, end_time = end_date))
+
+      # if download fails, try again once
+      if (inherits(d, "try-error")) {
+        message(paste0("Error downloading ", iso, ' RT prices from ', start_date, ' to ',
+                       end_date, '. Retrying...'))
+        d <- try(get_rt_prices_hourly(iso = iso,  location_type = location_type,
+                                      resample_frequency = '1 hour',
+                                      limit = 8760*num_locations*1.1,
+                                      start_time = start_date, end_time = end_date))
+
+        # if download fails a second time, abort
+        if (inherits(d, "try-error")) {
+          message(paste0("Another Error downloading ", iso, 'RT prices. Aborting Script.'))
+        }
       }
     }
   }
   return(d)
 }
+
