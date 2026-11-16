@@ -99,12 +99,14 @@ df <- get_gridstatus_dataset(wh_dataset = "caiso_fuel_mix",
 #                           limit = 5)
 ```
 
-### Convenience Function - Get Hourly Day Pricing Nationally
+### Convenience Function - Get Hourly Pricing Nationally
+##### Specify Day Ahead or Real Time Prices with price_type = 'da' or price_type = 'rt'
 
 ``` r
 # Pull historical prices for all ISOs nationally
 pull_historical_lmps_national(start_date = '2025-01-01', 
-                              end_date   = '2025-01-04')
+                              end_date   = '2025-01-04',
+                              price_type = 'da')
 #> Warning: package 'openxlsx2' was built under R version 4.4.3
 #> Downloading historical prices for ISONE...
 #> Finished downloading for ISONE in 0 minutes
